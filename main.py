@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import IntVar, messagebox
 
 root = Tk()
-root.title("This is a frame.")
+root.title("This is a test frame.")
 root.geometry("400x700")
 # root.iconbitmap('input pathway here for different window icon')
 
