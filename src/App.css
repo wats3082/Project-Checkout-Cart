@@ -12,6 +12,15 @@
   --cta-500: #f59e0b;
   --cta-400: #f97316;
   --cta-300: #fde68a;
+  --btn-accent-bg: rgba(245, 158, 11, 0.14);
+  --btn-accent-bg-hover: rgba(249, 115, 22, 0.24);
+  --btn-accent-bg-active: rgba(234, 88, 12, 0.36);
+  --btn-accent-border: rgba(251, 191, 36, 0.52);
+  --btn-accent-text: #ffefc4;
+  --btn-accent-text-strong: #2b1600;
+  --btn-disabled-bg: rgba(148, 163, 184, 0.2);
+  --btn-disabled-border: rgba(148, 163, 184, 0.36);
+  --btn-disabled-text: #cbd5e1;
   min-height: 100vh;
   width: 100%;
   color: var(--text-100);
@@ -70,9 +79,9 @@
 }
 
 .view-tab {
-  border: 1px solid rgba(253, 230, 138, 0.2);
-  background: rgba(245, 158, 11, 0.08);
-  color: #ffefc4;
+  border: 1px solid var(--btn-accent-border);
+  background: var(--btn-accent-bg);
+  color: var(--btn-accent-text);
   border-radius: 999px;
   padding: 8px 14px;
   font: inherit;
@@ -80,17 +89,23 @@
   cursor: pointer;
   flex: 1;
   text-align: center;
+  transition: background 140ms ease, border-color 140ms ease, transform 100ms ease;
 }
 
 .view-tab:hover {
-  border-color: rgba(251, 191, 36, 0.48);
-  background: rgba(245, 158, 11, 0.18);
+  border-color: rgba(251, 191, 36, 0.7);
+  background: var(--btn-accent-bg-hover);
   color: #fff7df;
 }
 
+.view-tab:active {
+  transform: translateY(1px);
+  background: var(--btn-accent-bg-active);
+}
+
 .view-tab.is-active {
-  background: linear-gradient(90deg, rgba(245, 158, 11, 0.32), rgba(249, 115, 22, 0.3));
-  border-color: rgba(251, 191, 36, 0.55);
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.45), rgba(249, 115, 22, 0.42));
+  border-color: rgba(251, 191, 36, 0.75);
   color: #fff7df;
 }
 
@@ -229,16 +244,22 @@
 
 .qty button {
   border: 0;
-  background: rgba(245, 158, 11, 0.08);
-  color: var(--text-100);
+  background: var(--btn-accent-bg);
+  color: var(--btn-accent-text);
   width: 34px;
   height: 34px;
   cursor: pointer;
   font-size: 1rem;
+  transition: background 120ms ease, color 120ms ease, transform 80ms ease;
 }
 
 .qty button:hover {
-  background: rgba(249, 115, 22, 0.28);
+  background: var(--btn-accent-bg-hover);
+}
+
+.qty button:active {
+  background: var(--btn-accent-bg-active);
+  transform: translateY(1px);
 }
 
 .qty strong {
@@ -396,18 +417,25 @@
 }
 
 .remove-btn {
-  border: 1px solid rgba(251, 191, 36, 0.55);
-  color: #ffefc4;
-  background: rgba(180, 83, 9, 0.32);
+  border: 1px solid var(--btn-accent-border);
+  color: var(--btn-accent-text);
+  background: var(--btn-accent-bg);
   border-radius: 999px;
   padding: 5px 10px;
   font: inherit;
   font-size: 0.82rem;
   cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
 }
 
 .remove-btn:hover {
-  background: rgba(194, 65, 12, 0.45);
+  border-color: rgba(251, 191, 36, 0.7);
+  background: var(--btn-accent-bg-hover);
+}
+
+.remove-btn:active {
+  transform: translateY(1px);
+  background: var(--btn-accent-bg-active);
 }
 
 .empty-cart {
@@ -458,7 +486,7 @@
   box-shadow:
     0 14px 30px -16px rgba(249, 115, 22, 0.85),
     inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  color: #2b1600;
+  color: var(--btn-accent-text-strong);
   font-weight: 700;
   padding: 13px 12px;
   margin-top: 16px;
@@ -482,7 +510,12 @@
 
 .checkout:disabled {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: 1;
+  background: var(--btn-disabled-bg);
+  color: var(--btn-disabled-text);
+  border: 1px solid var(--btn-disabled-border);
+  box-shadow: none;
+  filter: none;
 }
 
 .note {
