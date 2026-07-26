@@ -51,6 +51,39 @@
   font-size: 0.84rem;
 }
 
+.view-nav {
+  max-width: 1060px;
+  margin: 0 auto 16px;
+  display: inline-flex;
+  gap: 8px;
+  padding: 4px;
+  border: 1px solid rgba(96, 165, 250, 0.24);
+  border-radius: 999px;
+  background: rgba(10, 16, 43, 0.72);
+}
+
+.view-tab {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-200);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.view-tab:hover {
+  border-color: rgba(147, 197, 253, 0.26);
+  color: var(--text-100);
+}
+
+.view-tab.is-active {
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.32), rgba(96, 165, 250, 0.28));
+  border-color: rgba(96, 165, 250, 0.44);
+  color: #f5f9ff;
+}
+
 .layout {
   max-width: 1060px;
   margin: 0 auto;
@@ -131,6 +164,16 @@
 
 .item-row:first-of-type {
   margin-top: 0;
+}
+
+.entry-notice {
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  border: 1px solid rgba(96, 165, 250, 0.42);
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.13);
+  color: #d7e9ff;
+  font-size: 0.88rem;
 }
 
 .item-copy h3 {
@@ -255,6 +298,68 @@
   outline-offset: 1px;
 }
 
+.checkout-form select,
+.entry-form input,
+.entry-form select,
+.entry-form textarea {
+  border: 1px solid rgba(147, 197, 253, 0.24);
+  border-radius: 10px;
+  background: rgba(6, 10, 31, 0.85);
+  color: var(--text-100);
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.checkout-form select:focus-visible,
+.entry-form input:focus-visible,
+.entry-form select:focus-visible,
+.entry-form textarea:focus-visible {
+  outline: 2px solid rgba(96, 165, 250, 0.65);
+  outline-offset: 1px;
+}
+
+.entry-form textarea {
+  resize: vertical;
+}
+
+.entry-form {
+  display: grid;
+  gap: 12px;
+}
+
+.add-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.add-entry-panel {
+  max-width: 860px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.field-error {
+  margin: 2px 0 0;
+  font-size: 0.78rem;
+  color: #fda4af;
+}
+
+.entry-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.entry-actions .checkout {
+  width: auto;
+  min-width: 220px;
+  margin: 0;
+}
+
 .checkout {
   width: 100%;
   border: 0;
@@ -327,6 +432,10 @@
   .item-actions {
     min-width: 144px;
   }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -341,6 +450,16 @@
   .panel-head {
     align-items: start;
     flex-direction: column;
+  }
+
+  .view-nav {
+    display: flex;
+    width: 100%;
+  }
+
+  .view-tab {
+    flex: 1;
+    text-align: center;
   }
 
   .item-row {
