@@ -12,12 +12,17 @@
   --cta-500: #f59e0b;
   --cta-400: #f97316;
   --cta-300: #fde68a;
-  --btn-accent-bg: rgba(245, 158, 11, 0.14);
-  --btn-accent-bg-hover: rgba(249, 115, 22, 0.24);
-  --btn-accent-bg-active: rgba(234, 88, 12, 0.36);
+  --btn-accent-bg: rgba(245, 158, 11, 0.16);
+  --btn-accent-bg-hover: rgba(249, 115, 22, 0.28);
+  --btn-accent-bg-active: rgba(234, 88, 12, 0.4);
   --btn-accent-border: rgba(251, 191, 36, 0.52);
+  --btn-accent-border-hover: rgba(251, 191, 36, 0.72);
+  --btn-accent-border-active: rgba(251, 146, 60, 0.82);
   --btn-accent-text: #ffefc4;
   --btn-accent-text-strong: #2b1600;
+  --btn-accent-gradient-start: #f59e0b;
+  --btn-accent-gradient-end: #f97316;
+  --btn-accent-shadow: rgba(249, 115, 22, 0.9);
   --btn-disabled-bg: rgba(148, 163, 184, 0.2);
   --btn-disabled-border: rgba(148, 163, 184, 0.36);
   --btn-disabled-text: #cbd5e1;
@@ -92,20 +97,33 @@
 }
 
 .view-tab:hover {
-  border-color: rgba(251, 191, 36, 0.7);
+  border-color: var(--btn-accent-border-hover);
   background: var(--btn-accent-bg-hover);
   color: #fff7df;
 }
 
 .view-tab:active {
   transform: translateY(1px);
+  border-color: var(--btn-accent-border-active);
   background: var(--btn-accent-bg-active);
+}
+
+.view-tab:focus-visible {
+  outline: 2px solid var(--btn-accent-border-hover);
+  outline-offset: 2px;
 }
 
 .view-tab.is-active {
   background: linear-gradient(90deg, rgba(245, 158, 11, 0.45), rgba(249, 115, 22, 0.42));
-  border-color: rgba(251, 191, 36, 0.75);
+  border-color: var(--btn-accent-border-hover);
   color: #fff7df;
+}
+
+.view-tab:disabled {
+  background: var(--btn-disabled-bg);
+  border-color: var(--btn-disabled-border);
+  color: var(--btn-disabled-text);
+  cursor: not-allowed;
 }
 
 .layout {
@@ -235,10 +253,10 @@
 .qty {
   display: inline-flex;
   align-items: center;
-  border: 1px solid rgba(96, 165, 250, 0.35);
+  border: 1px solid var(--btn-accent-border);
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(28, 16, 6, 0.7);
 }
 
 .qty button {
@@ -259,6 +277,12 @@
 .qty button:active {
   background: var(--btn-accent-bg-active);
   transform: translateY(1px);
+}
+
+.qty button:disabled {
+  background: var(--btn-disabled-bg);
+  color: var(--btn-disabled-text);
+  cursor: not-allowed;
 }
 
 .qty strong {
@@ -428,13 +452,26 @@
 }
 
 .remove-btn:hover {
-  border-color: rgba(251, 191, 36, 0.7);
+  border-color: var(--btn-accent-border-hover);
   background: var(--btn-accent-bg-hover);
 }
 
 .remove-btn:active {
   transform: translateY(1px);
+  border-color: var(--btn-accent-border-active);
   background: var(--btn-accent-bg-active);
+}
+
+.remove-btn:focus-visible {
+  outline: 2px solid var(--btn-accent-border-hover);
+  outline-offset: 2px;
+}
+
+.remove-btn:disabled {
+  background: var(--btn-disabled-bg);
+  border-color: var(--btn-disabled-border);
+  color: var(--btn-disabled-text);
+  cursor: not-allowed;
 }
 
 .empty-cart {
@@ -479,26 +516,37 @@
 
 .checkout {
   width: 100%;
-  border: 0;
+  border: 1px solid var(--btn-accent-border);
   border-radius: 11px;
-  background: linear-gradient(92deg, var(--cta-500) 0%, var(--cta-400) 100%);
+  background: linear-gradient(92deg, var(--btn-accent-gradient-start) 0%, var(--btn-accent-gradient-end) 100%);
   box-shadow:
-    0 14px 30px -16px rgba(249, 115, 22, 0.85),
+    0 14px 30px -16px var(--btn-accent-shadow),
     inset 0 1px 0 rgba(255, 255, 255, 0.22);
   color: var(--btn-accent-text-strong);
   font-weight: 700;
   padding: 13px 12px;
   margin-top: 16px;
   cursor: pointer;
-  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease, border-color 120ms ease;
 }
 
 .checkout:hover:enabled {
   transform: translateY(-1px);
+  border-color: var(--btn-accent-border-hover);
   box-shadow:
-    0 22px 32px -16px rgba(249, 115, 22, 0.95),
+    0 22px 32px -16px var(--btn-accent-shadow),
     inset 0 1px 0 rgba(255, 255, 255, 0.28);
   filter: brightness(1.05);
+}
+
+.checkout:active:enabled {
+  transform: translateY(1px);
+  border-color: var(--btn-accent-border-active);
+}
+
+.checkout:focus-visible {
+  outline: 2px solid var(--btn-accent-border-hover);
+  outline-offset: 2px;
 }
 
 .cta-meta {
