@@ -602,7 +602,8 @@
   .checkout-layout {
     min-height: 0;
     height: 100%;
-    gap: 10px;
+    gap: 12px;
+    grid-template-columns: minmax(0, 1.25fr) minmax(380px, 1fr);
     overflow: hidden;
   }
 
@@ -632,6 +633,10 @@
     overflow: auto;
   }
 
+  .checkout-layout .catalog {
+    padding-right: 6px;
+  }
+
   .checkout-layout .item-row {
     padding: 8px;
     margin-top: 6px;
@@ -651,15 +656,37 @@
     font-size: 0.88rem;
   }
 
+  .checkout-layout .summary {
+    padding: 11px;
+  }
+
+  .checkout-layout .summary .panel-kicker {
+    font-size: 0.7rem;
+  }
+
+  .checkout-layout .summary h2 {
+    font-size: 1rem;
+  }
+
+  .checkout-layout .summary .pill {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+
   .checkout-layout .breakdown-list,
   .checkout-layout .summary dl {
     gap: 6px;
     font-size: 0.89rem;
   }
 
+  .checkout-layout .summary .total {
+    padding-top: 8px;
+    margin-top: 2px;
+  }
+
   .checkout-layout .checkout-form {
-    margin-top: 8px;
-    gap: 6px;
+    margin-top: 7px;
+    gap: 5px;
   }
 
   .checkout-layout .field {
@@ -667,24 +694,37 @@
   }
 
   .checkout-layout .checkout-form label {
-    font-size: 0.72rem;
+    font-size: 0.69rem;
   }
 
   .checkout-layout .checkout-form input {
-    padding: 7px 9px;
-    font-size: 0.9rem;
+    padding: 6px 9px;
+    font-size: 0.85rem;
   }
 
   .checkout-layout .token-note,
   .checkout-layout .cta-meta,
   .checkout-layout .note {
-    margin-top: 4px;
-    font-size: 0.74rem;
+    margin-top: 3px;
+    font-size: 0.71rem;
   }
 
   .checkout-layout .checkout {
+    margin-top: 6px;
+    padding: 8px 11px;
+    font-size: 0.87rem;
+  }
+
+  .checkout-layout .receipt {
     margin-top: 8px;
-    padding: 9px 11px;
-    font-size: 0.92rem;
+    padding: 8px;
+  }
+
+  .checkout-layout .receipt h3 {
+    font-size: 0.88rem;
+  }
+
+  .checkout-layout .receipt p {
+    font-size: 0.82rem;
   }
 }
