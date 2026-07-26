@@ -174,3 +174,8 @@
     min-width: 140px;
   }
 }
+.standard-note {
+  margin: 8px 0 0;
+  color: #93c5fd;
+  font-size: 0.82rem;
+}

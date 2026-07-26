@@ -48,6 +48,7 @@ function App() {
           React frontend with dummy transaction data today, designed for an eventual AWS backend
           (Lambda + API Gateway + DynamoDB + Stripe webhooks).
         </p>
+        <p className="standard-note">Project standard UI shell</p>
       </header>
 
       <main className="layout">
