@@ -56,7 +56,6 @@
   margin: 0;
   color: var(--text-200);
   line-height: 1.5;
-  max-width: 72ch;
 }
 
 .standard-note {
