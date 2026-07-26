@@ -13,6 +13,7 @@
   --cta-400: #f97316;
   --cta-300: #fde68a;
   min-height: 100vh;
+  width: 100%;
   color: var(--text-100);
   background:
     radial-gradient(circle at 10% 0%, rgba(96, 165, 250, 0.2) 0%, transparent 36%),
@@ -23,8 +24,9 @@
 }
 
 .hero {
-  max-width: 1060px;
-  margin: 0 auto 22px;
+  width: 100%;
+  max-width: none;
+  margin: 0 0 22px;
 }
 
 .eyebrow {
@@ -55,15 +57,16 @@
 }
 
 .view-nav {
-  max-width: 1060px;
-  margin: 0 auto 16px;
+  width: 100%;
+  max-width: none;
+  margin: 0 0 16px;
   display: flex;
   gap: 8px;
   padding: 4px;
   border: 1px solid rgba(96, 165, 250, 0.24);
   border-radius: 999px;
   background: rgba(10, 16, 43, 0.72);
-  width: fit-content;
+  justify-content: space-between;
 }
 
 .view-tab {
@@ -75,6 +78,8 @@
   font: inherit;
   font-weight: 600;
   cursor: pointer;
+  flex: 1;
+  text-align: center;
 }
 
 .view-tab:hover {
@@ -90,8 +95,9 @@
 }
 
 .layout {
-  max-width: 1060px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr);
   gap: 18px;
@@ -551,12 +557,11 @@
   .view-nav {
     margin: 0 auto 16px;
     width: 100%;
-    max-width: 420px;
+    max-width: none;
   }
 
   .view-tab {
-    flex: 1;
-    text-align: center;
+    padding: 8px 10px;
   }
 
   .item-row {
@@ -580,7 +585,7 @@
   }
 
   .hero {
-    margin: 0 auto;
+    margin: 0;
   }
 
   .hero h1 {
@@ -599,7 +604,7 @@
   }
 
   .view-nav {
-    margin: 0 auto;
+    margin: 0;
     padding: 3px;
   }
 
