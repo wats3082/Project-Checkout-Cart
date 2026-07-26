@@ -58,13 +58,21 @@ function App() {
       <main className="layout">
         <section className="panel catalog">
           <div className="panel-head">
-            <h2>Product List</h2>
+            <div className="panel-title-block">
+              <p className="panel-kicker">Step 1 · Build cart</p>
+              <h2>Product List</h2>
+            </div>
             <span className="pill">In cart: {itemCount}</span>
           </div>
           {cart.map((item) => (
             <article key={item.id} className="item-row">
               <div className="item-copy">
-                <h3>{item.name}</h3>
+                <h3>
+                  <span className="item-accent" aria-hidden="true">
+                    ◉
+                  </span>
+                  {item.name}
+                </h3>
                 <p>{item.description}</p>
               </div>
               <div className="item-actions">
@@ -93,7 +101,10 @@ function App() {
 
         <aside className="panel summary">
           <div className="panel-head">
-            <h2>Checkout</h2>
+            <div className="panel-title-block">
+              <p className="panel-kicker">Step 2 · Confirm payment</p>
+              <h2>Checkout</h2>
+            </div>
             <span className="pill muted">Step 2 of 2</span>
           </div>
           <h3 className="subheading">Order Summary</h3>
@@ -113,10 +124,14 @@ function App() {
           </dl>
 
           <div className="checkout-form" aria-label="Checkout details">
-            <label htmlFor="customerEmail">Email for receipt</label>
-            <input id="customerEmail" type="email" placeholder="shopper@example.com" />
-            <label htmlFor="promoCode">Promo code</label>
-            <input id="promoCode" type="text" placeholder="Optional" />
+            <div className="field">
+              <label htmlFor="customerEmail">Email for receipt</label>
+              <input id="customerEmail" type="email" placeholder="shopper@example.com" />
+            </div>
+            <div className="field">
+              <label htmlFor="promoCode">Promo code</label>
+              <input id="promoCode" type="text" placeholder="Optional" />
+            </div>
           </div>
 
           <button
@@ -125,8 +140,9 @@ function App() {
             onClick={handleCheckout}
             disabled={subtotal <= 0 || isProcessing}
           >
-            {isProcessing ? 'Processing…' : 'Pay now'}
+            {isProcessing ? 'Processing…' : 'Complete demo checkout'}
           </button>
+          <p className="cta-meta">🔒 Secure-style demo flow</p>
 
           <p className="note">Demo mode only — no real card charges are made.</p>
 
