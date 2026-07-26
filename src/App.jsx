@@ -4,6 +4,7 @@ import { submitCheckout } from './services/checkoutApi'
 import './App.css'
 
 const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
+const taxRate = 0.0825
 
 const initialEntryForm = {
   name: '',
@@ -22,17 +23,26 @@ function App() {
   const [entryForm, setEntryForm] = useState(initialEntryForm)
   const [formErrors, setFormErrors] = useState({})
   const [entryNotice, setEntryNotice] = useState('')
+  const [couponCode, setCouponCode] = useState('')
+  const [giftCardCode, setGiftCardCode] = useState('')
 
   const itemCount = useMemo(
     () => cart.reduce((sum, item) => sum + item.quantity, 0),
+    [cart],
+  )
+  const cartEntries = useMemo(
+    () => cart.filter((item) => item.quantity > 0),
     [cart],
   )
   const subtotal = useMemo(
     () => cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
     [cart],
   )
+  const tax = subtotal > 0 ? subtotal * taxRate : 0
   const processingFee = subtotal > 0 ? Math.max(1.49, subtotal * 0.029) : 0
-  const total = subtotal + processingFee
+  const couponCredit = couponCode.trim() ? Math.min(subtotal * 0.08, 24) : 0
+  const giftCardCredit = giftCardCode.trim() ? Math.min(subtotal, 20) : 0
+  const total = Math.max(0, subtotal + tax + processingFee - couponCredit - giftCardCredit)
 
   const updateQuantity = (id, direction) => {
     setReceipt(null)
@@ -45,11 +55,26 @@ function App() {
     )
   }
 
+  const removeFromCart = (id) => {
+    setReceipt(null)
+    setCart((items) =>
+      items.map((item) => (item.id === id ? { ...item, quantity: 0 } : item)),
+    )
+  }
+
   const handleCheckout = async () => {
     if (subtotal <= 0 || isProcessing) return
     setIsProcessing(true)
     try {
-      const result = await submitCheckout({ cart, subtotal, processingFee, total })
+      const result = await submitCheckout({
+        cart,
+        subtotal,
+        tax,
+        processingFee,
+        couponCode,
+        giftCardCode,
+        total,
+      })
       setReceipt(result)
     } finally {
       setIsProcessing(false)
@@ -58,7 +83,7 @@ function App() {
 
   const openView = (viewName) => {
     setActiveView(viewName)
-    if (viewName === 'add-entry') {
+    if (viewName === 'cart') {
       setEntryNotice('')
     } else {
       setFormErrors({})
@@ -148,10 +173,10 @@ function App() {
         </button>
         <button
           type="button"
-          className={`view-tab ${activeView === 'add-entry' ? 'is-active' : ''}`}
-          onClick={() => openView('add-entry')}
+          className={`view-tab ${activeView === 'cart' ? 'is-active' : ''}`}
+          onClick={() => openView('cart')}
         >
-          Add Entry
+          View Cart
         </button>
       </nav>
 
@@ -214,14 +239,26 @@ function App() {
               <span className="pill muted">Step 2 of 2</span>
             </div>
             <h3 className="subheading">Order Summary</h3>
-            <dl>
+            <dl className="breakdown-list">
               <div>
                 <dt>Subtotal</dt>
                 <dd>{currency.format(subtotal)}</dd>
               </div>
               <div>
+                <dt>Tax ({(taxRate * 100).toFixed(2)}%)</dt>
+                <dd>{currency.format(tax)}</dd>
+              </div>
+              <div>
                 <dt>Processing</dt>
                 <dd>{currency.format(processingFee)}</dd>
+              </div>
+              <div className="breakdown-credit">
+                <dt>Coupon</dt>
+                <dd>-{currency.format(couponCredit)}</dd>
+              </div>
+              <div className="breakdown-credit">
+                <dt>Gift card</dt>
+                <dd>-{currency.format(giftCardCredit)}</dd>
               </div>
               <div className="total">
                 <dt>Total</dt>
@@ -235,10 +272,28 @@ function App() {
                 <input id="customerEmail" type="email" placeholder="shopper@example.com" />
               </div>
               <div className="field">
-                <label htmlFor="promoCode">Promo code</label>
-                <input id="promoCode" type="text" placeholder="Optional" />
+                <label htmlFor="couponCode">Coupon code</label>
+                <input
+                  id="couponCode"
+                  type="text"
+                  value={couponCode}
+                  onChange={(event) => setCouponCode(event.target.value)}
+                  placeholder="Optional"
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="giftCardCode">Gift card code</label>
+                <input
+                  id="giftCardCode"
+                  type="text"
+                  value={giftCardCode}
+                  onChange={(event) => setGiftCardCode(event.target.value)}
+                  placeholder="Optional"
+                />
               </div>
             </div>
+
+            <p className="token-note">Coupon/gift card values are local demo estimates.</p>
 
             <button
               type="button"
@@ -262,114 +317,168 @@ function App() {
           </aside>
         </main>
       ) : (
-        <main className="layout add-layout">
-          <section className="panel add-entry-panel">
-            <div className="panel-head">
-              <div className="panel-title-block">
-                <p className="panel-kicker">Add payment/cart entry</p>
-                <h2>Add Entry</h2>
-              </div>
-              <span className="pill">Products: {cart.length}</span>
-            </div>
-
-            <form className="entry-form" onSubmit={handleEntrySubmit} noValidate>
-              <div className="field">
-                <label htmlFor="entryName">Item name *</label>
-                <input
-                  id="entryName"
-                  name="name"
-                  value={entryForm.name}
-                  onChange={handleEntryChange}
-                  placeholder="Cloud Compliance Bundle"
-                />
-                {formErrors.name && <p className="field-error">{formErrors.name}</p>}
+        <main className="layout cart-layout">
+          <section className="cart-hub">
+            <article className="panel cart-management-panel">
+              <div className="panel-head">
+                <div className="panel-title-block">
+                  <p className="panel-kicker">Cart management</p>
+                  <h2>View Cart</h2>
+                </div>
+                <span className="pill">Items: {itemCount}</span>
               </div>
 
-              <div className="form-grid">
+              {cartEntries.length === 0 ? (
+                <p className="empty-cart">Your cart is empty. Add quantities from Checkout View.</p>
+              ) : (
+                <div className="cart-list">
+                  {cartEntries.map((item) => (
+                    <div key={item.id} className="cart-line">
+                      <div>
+                        <h3>{item.name}</h3>
+                        <p>
+                          {item.quantity} × {currency.format(item.price)}
+                        </p>
+                      </div>
+                      <div className="cart-line-actions">
+                        <strong>{currency.format(item.price * item.quantity)}</strong>
+                        <button
+                          type="button"
+                          className="remove-btn"
+                          onClick={() => removeFromCart(item.id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <dl className="breakdown-list cart-breakdown">
+                <div>
+                  <dt>Subtotal</dt>
+                  <dd>{currency.format(subtotal)}</dd>
+                </div>
+                <div>
+                  <dt>Tax ({(taxRate * 100).toFixed(2)}%)</dt>
+                  <dd>{currency.format(tax)}</dd>
+                </div>
+                <div className="total">
+                  <dt>Total</dt>
+                  <dd>{currency.format(total)}</dd>
+                </div>
+              </dl>
+            </article>
+
+            <article className="panel add-entry-panel">
+              <div className="panel-head">
+                <div className="panel-title-block">
+                  <p className="panel-kicker">Add payment/cart entry</p>
+                  <h2>Add Entry</h2>
+                </div>
+                <span className="pill">Products: {cart.length}</span>
+              </div>
+
+              <form className="entry-form" onSubmit={handleEntrySubmit} noValidate>
                 <div className="field">
-                  <label htmlFor="entryPrice">Price (USD) *</label>
+                  <label htmlFor="entryName">Item name *</label>
                   <input
-                    id="entryPrice"
-                    name="price"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={entryForm.price}
+                    id="entryName"
+                    name="name"
+                    value={entryForm.name}
                     onChange={handleEntryChange}
-                    placeholder="129.00"
+                    placeholder="Cloud Compliance Bundle"
                   />
-                  {formErrors.price && <p className="field-error">{formErrors.price}</p>}
+                  {formErrors.name && <p className="field-error">{formErrors.name}</p>}
+                </div>
+
+                <div className="form-grid">
+                  <div className="field">
+                    <label htmlFor="entryPrice">Price (USD) *</label>
+                    <input
+                      id="entryPrice"
+                      name="price"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={entryForm.price}
+                      onChange={handleEntryChange}
+                      placeholder="129.00"
+                    />
+                    {formErrors.price && <p className="field-error">{formErrors.price}</p>}
+                  </div>
+
+                  <div className="field">
+                    <label htmlFor="entryQuantity">Quantity *</label>
+                    <input
+                      id="entryQuantity"
+                      name="quantity"
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={entryForm.quantity}
+                      onChange={handleEntryChange}
+                    />
+                    {formErrors.quantity && <p className="field-error">{formErrors.quantity}</p>}
+                  </div>
+                </div>
+
+                <div className="form-grid">
+                  <div className="field">
+                    <label htmlFor="entryCategory">Category *</label>
+                    <select
+                      id="entryCategory"
+                      name="category"
+                      value={entryForm.category}
+                      onChange={handleEntryChange}
+                    >
+                      <option value="Services">Services</option>
+                      <option value="Subscription">Subscription</option>
+                      <option value="Digital Goods">Digital Goods</option>
+                      <option value="Hardware">Hardware</option>
+                    </select>
+                    {formErrors.category && <p className="field-error">{formErrors.category}</p>}
+                  </div>
+
+                  <div className="field">
+                    <label htmlFor="entryStatus">Status *</label>
+                    <select
+                      id="entryStatus"
+                      name="status"
+                      value={entryForm.status}
+                      onChange={handleEntryChange}
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Draft">Draft</option>
+                      <option value="Backorder">Backorder</option>
+                    </select>
+                    {formErrors.status && <p className="field-error">{formErrors.status}</p>}
+                  </div>
                 </div>
 
                 <div className="field">
-                  <label htmlFor="entryQuantity">Quantity *</label>
-                  <input
-                    id="entryQuantity"
-                    name="quantity"
-                    type="number"
-                    min="1"
-                    step="1"
-                    value={entryForm.quantity}
+                  <label htmlFor="entryNotes">Notes</label>
+                  <textarea
+                    id="entryNotes"
+                    name="notes"
+                    rows="3"
+                    value={entryForm.notes}
                     onChange={handleEntryChange}
+                    placeholder="Optional internal note for checkout context."
                   />
-                  {formErrors.quantity && <p className="field-error">{formErrors.quantity}</p>}
-                </div>
-              </div>
-
-              <div className="form-grid">
-                <div className="field">
-                  <label htmlFor="entryCategory">Category *</label>
-                  <select
-                    id="entryCategory"
-                    name="category"
-                    value={entryForm.category}
-                    onChange={handleEntryChange}
-                  >
-                    <option value="Services">Services</option>
-                    <option value="Subscription">Subscription</option>
-                    <option value="Digital Goods">Digital Goods</option>
-                    <option value="Hardware">Hardware</option>
-                  </select>
-                  {formErrors.category && <p className="field-error">{formErrors.category}</p>}
                 </div>
 
-                <div className="field">
-                  <label htmlFor="entryStatus">Status *</label>
-                  <select
-                    id="entryStatus"
-                    name="status"
-                    value={entryForm.status}
-                    onChange={handleEntryChange}
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Draft">Draft</option>
-                    <option value="Backorder">Backorder</option>
-                  </select>
-                  {formErrors.status && <p className="field-error">{formErrors.status}</p>}
+                <div className="entry-actions">
+                  <button type="submit" className="checkout">
+                    Add entry to list
+                  </button>
+                  <button type="button" className="view-tab" onClick={() => openView('checkout')}>
+                    Back to checkout
+                  </button>
                 </div>
-              </div>
-
-              <div className="field">
-                <label htmlFor="entryNotes">Notes</label>
-                <textarea
-                  id="entryNotes"
-                  name="notes"
-                  rows="3"
-                  value={entryForm.notes}
-                  onChange={handleEntryChange}
-                  placeholder="Optional internal note for checkout context."
-                />
-              </div>
-
-              <div className="entry-actions">
-                <button type="submit" className="checkout">
-                  Add entry to list
-                </button>
-                <button type="button" className="view-tab" onClick={() => openView('checkout')}>
-                  Back to checkout
-                </button>
-              </div>
-            </form>
+              </form>
+            </article>
           </section>
         </main>
       )}
