@@ -10,6 +10,10 @@ function App() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [receipt, setReceipt] = useState(null)
 
+  const itemCount = useMemo(
+    () => cart.reduce((sum, item) => sum + item.quantity, 0),
+    [cart],
+  )
   const subtotal = useMemo(
     () => cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
     [cart],
@@ -42,32 +46,43 @@ function App() {
   return (
     <div className="app-shell">
       <header className="hero">
-        <p className="eyebrow">Stripe-style checkout demo</p>
+        <p className="eyebrow">Indigo commerce demo</p>
         <h1>Project Checkout Cart</h1>
         <p>
           React frontend with dummy transaction data today, designed for an eventual AWS backend
           (Lambda + API Gateway + DynamoDB + Stripe webhooks).
         </p>
-        <p className="standard-note">Project standard UI shell</p>
+        <p className="standard-note">Project standard portfolio shell</p>
       </header>
 
       <main className="layout">
         <section className="panel catalog">
-          <h2>Items</h2>
+          <div className="panel-head">
+            <h2>Product List</h2>
+            <span className="pill">In cart: {itemCount}</span>
+          </div>
           {cart.map((item) => (
             <article key={item.id} className="item-row">
-              <div>
+              <div className="item-copy">
                 <h3>{item.name}</h3>
                 <p>{item.description}</p>
               </div>
               <div className="item-actions">
-                <span>{currency.format(item.price)}</span>
+                <span className="price">{currency.format(item.price)}</span>
                 <div className="qty">
-                  <button type="button" onClick={() => updateQuantity(item.id, 'dec')} aria-label={`Decrease ${item.name}`}>
+                  <button
+                    type="button"
+                    onClick={() => updateQuantity(item.id, 'dec')}
+                    aria-label={`Decrease ${item.name}`}
+                  >
                     -
                   </button>
                   <strong>{item.quantity}</strong>
-                  <button type="button" onClick={() => updateQuantity(item.id, 'inc')} aria-label={`Increase ${item.name}`}>
+                  <button
+                    type="button"
+                    onClick={() => updateQuantity(item.id, 'inc')}
+                    aria-label={`Increase ${item.name}`}
+                  >
                     +
                   </button>
                 </div>
@@ -77,7 +92,11 @@ function App() {
         </section>
 
         <aside className="panel summary">
-          <h2>Order Summary</h2>
+          <div className="panel-head">
+            <h2>Checkout</h2>
+            <span className="pill muted">Step 2 of 2</span>
+          </div>
+          <h3 className="subheading">Order Summary</h3>
           <dl>
             <div>
               <dt>Subtotal</dt>
@@ -92,6 +111,13 @@ function App() {
               <dd>{currency.format(total)}</dd>
             </div>
           </dl>
+
+          <div className="checkout-form" aria-label="Checkout details">
+            <label htmlFor="customerEmail">Email for receipt</label>
+            <input id="customerEmail" type="email" placeholder="shopper@example.com" />
+            <label htmlFor="promoCode">Promo code</label>
+            <input id="promoCode" type="text" placeholder="Optional" />
+          </div>
 
           <button
             type="button"
