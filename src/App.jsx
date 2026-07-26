@@ -181,7 +181,7 @@ function App() {
       </nav>
 
       {activeView === 'checkout' ? (
-        <main className="layout">
+        <main className="layout checkout-layout">
           <section className="panel catalog">
             <div className="panel-head">
               <div className="panel-title-block">

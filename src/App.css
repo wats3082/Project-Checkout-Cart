@@ -564,3 +564,95 @@
     justify-items: start;
   }
 }
+
+@media (min-width: 1024px) and (min-height: 700px) {
+  .app-shell {
+    height: 100vh;
+    overflow: hidden;
+    padding: 18px 18px 20px;
+  }
+
+  .hero {
+    margin: 0 auto 10px;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.65rem, 2.5vw, 2.1rem);
+    margin-bottom: 4px;
+  }
+
+  .hero p {
+    line-height: 1.35;
+    font-size: 0.91rem;
+  }
+
+  .standard-note {
+    margin-top: 6px;
+  }
+
+  .view-nav {
+    margin: 0 auto 10px;
+  }
+
+  .checkout-layout {
+    height: calc(100vh - 170px);
+    gap: 12px;
+  }
+
+  .checkout-layout .panel {
+    padding: 12px;
+  }
+
+  .checkout-layout .catalog,
+  .checkout-layout .summary {
+    min-height: 0;
+    overflow: auto;
+  }
+
+  .checkout-layout .item-row {
+    padding: 9px;
+    margin-top: 8px;
+  }
+
+  .checkout-layout .item-copy p {
+    margin-top: 4px;
+    font-size: 0.84rem;
+  }
+
+  .checkout-layout .panel-head {
+    margin-bottom: 10px;
+  }
+
+  .checkout-layout .subheading {
+    margin-bottom: 8px;
+  }
+
+  .checkout-layout .breakdown-list,
+  .checkout-layout .summary dl {
+    gap: 8px;
+  }
+
+  .checkout-layout .checkout-form {
+    margin-top: 10px;
+    gap: 8px;
+  }
+
+  .checkout-layout .field {
+    gap: 4px;
+  }
+
+  .checkout-layout .checkout-form input {
+    padding: 8px 10px;
+  }
+
+  .checkout-layout .token-note,
+  .checkout-layout .cta-meta,
+  .checkout-layout .note {
+    margin-top: 6px;
+  }
+
+  .checkout-layout .checkout {
+    margin-top: 10px;
+    padding: 10px 12px;
+  }
+}
