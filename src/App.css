@@ -54,12 +54,13 @@
 .view-nav {
   max-width: 1060px;
   margin: 0 auto 16px;
-  display: inline-flex;
+  display: flex;
   gap: 8px;
   padding: 4px;
   border: 1px solid rgba(96, 165, 250, 0.24);
   border-radius: 999px;
   background: rgba(10, 16, 43, 0.72);
+  width: fit-content;
 }
 
 .view-tab {
@@ -453,8 +454,9 @@
   }
 
   .view-nav {
-    display: flex;
+    margin: 0 auto 16px;
     width: 100%;
+    max-width: 420px;
   }
 
   .view-tab {
