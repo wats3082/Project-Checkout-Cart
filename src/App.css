@@ -9,6 +9,9 @@
   --accent-500: #6366f1;
   --accent-400: #60a5fa;
   --accent-300: #93c5fd;
+  --cta-500: #f59e0b;
+  --cta-400: #f97316;
+  --cta-300: #fde68a;
   min-height: 100vh;
   color: var(--text-100);
   background:
@@ -64,9 +67,9 @@
 }
 
 .view-tab {
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--text-200);
+  border: 1px solid rgba(253, 230, 138, 0.2);
+  background: rgba(245, 158, 11, 0.08);
+  color: #ffefc4;
   border-radius: 999px;
   padding: 8px 14px;
   font: inherit;
@@ -75,14 +78,15 @@
 }
 
 .view-tab:hover {
-  border-color: rgba(147, 197, 253, 0.26);
-  color: var(--text-100);
+  border-color: rgba(251, 191, 36, 0.48);
+  background: rgba(245, 158, 11, 0.18);
+  color: #fff7df;
 }
 
 .view-tab.is-active {
-  background: linear-gradient(90deg, rgba(99, 102, 241, 0.32), rgba(96, 165, 250, 0.28));
-  border-color: rgba(96, 165, 250, 0.44);
-  color: #f5f9ff;
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.32), rgba(249, 115, 22, 0.3));
+  border-color: rgba(251, 191, 36, 0.55);
+  color: #fff7df;
 }
 
 .layout {
@@ -219,7 +223,7 @@
 
 .qty button {
   border: 0;
-  background: transparent;
+  background: rgba(245, 158, 11, 0.08);
   color: var(--text-100);
   width: 34px;
   height: 34px;
@@ -228,7 +232,7 @@
 }
 
 .qty button:hover {
-  background: rgba(99, 102, 241, 0.22);
+  background: rgba(249, 115, 22, 0.28);
 }
 
 .qty strong {
@@ -386,9 +390,9 @@
 }
 
 .remove-btn {
-  border: 1px solid rgba(251, 113, 133, 0.5);
-  color: #fecdd3;
-  background: rgba(159, 18, 57, 0.24);
+  border: 1px solid rgba(251, 191, 36, 0.55);
+  color: #ffefc4;
+  background: rgba(180, 83, 9, 0.32);
   border-radius: 999px;
   padding: 5px 10px;
   font: inherit;
@@ -397,7 +401,7 @@
 }
 
 .remove-btn:hover {
-  background: rgba(190, 24, 93, 0.35);
+  background: rgba(194, 65, 12, 0.45);
 }
 
 .empty-cart {
@@ -444,11 +448,11 @@
   width: 100%;
   border: 0;
   border-radius: 11px;
-  background: linear-gradient(92deg, var(--accent-500) 0%, var(--accent-400) 100%);
+  background: linear-gradient(92deg, var(--cta-500) 0%, var(--cta-400) 100%);
   box-shadow:
-    0 14px 30px -16px rgba(96, 165, 250, 0.9),
+    0 14px 30px -16px rgba(249, 115, 22, 0.85),
     inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  color: white;
+  color: #2b1600;
   font-weight: 700;
   padding: 13px 12px;
   margin-top: 16px;
@@ -459,7 +463,7 @@
 .checkout:hover:enabled {
   transform: translateY(-1px);
   box-shadow:
-    0 22px 32px -16px rgba(96, 165, 250, 0.95),
+    0 22px 32px -16px rgba(249, 115, 22, 0.95),
     inset 0 1px 0 rgba(255, 255, 255, 0.28);
   filter: brightness(1.05);
 }
