@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { products } from './data/products'
 import { submitCheckout } from './services/checkoutApi'
 import './App.css'
@@ -38,13 +38,26 @@ function App() {
     () => cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
     [cart],
   )
-  const tax = subtotal > 0 ? subtotal * taxRate : 0
-  const processingFee = subtotal > 0 ? Math.max(1.49, subtotal * 0.029) : 0
-  const couponCredit = couponCode.trim() ? Math.min(subtotal * 0.08, 24) : 0
-  const giftCardCredit = giftCardCode.trim() ? Math.min(subtotal, 20) : 0
-  const total = Math.max(0, subtotal + tax + processingFee - couponCredit - giftCardCredit)
 
-  const updateQuantity = (id, direction) => {
+  const tax = useMemo(() => (subtotal > 0 ? subtotal * taxRate : 0), [subtotal])
+  const processingFee = useMemo(
+    () => (subtotal > 0 ? Math.max(1.49, subtotal * 0.029) : 0),
+    [subtotal],
+  )
+  const couponCredit = useMemo(
+    () => (couponCode.trim() ? Math.min(subtotal * 0.08, 24) : 0),
+    [couponCode, subtotal],
+  )
+  const giftCardCredit = useMemo(
+    () => (giftCardCode.trim() ? Math.min(subtotal, 20) : 0),
+    [giftCardCode, subtotal],
+  )
+  const total = useMemo(
+    () => Math.max(0, subtotal + tax + processingFee - couponCredit - giftCardCredit),
+    [subtotal, tax, processingFee, couponCredit, giftCardCredit],
+  )
+
+  const updateQuantity = useCallback((id, direction) => {
     setReceipt(null)
     setCart((items) =>
       items.map((item) => {
@@ -53,16 +66,16 @@ function App() {
         return { ...item, quantity: next }
       }),
     )
-  }
+  }, [])
 
-  const removeFromCart = (id) => {
+  const removeFromCart = useCallback((id) => {
     setReceipt(null)
     setCart((items) =>
       items.map((item) => (item.id === id ? { ...item, quantity: 0 } : item)),
     )
-  }
+  }, [])
 
-  const handleCheckout = async () => {
+  const handleCheckout = useCallback(async () => {
     if (subtotal <= 0 || isProcessing) return
     setIsProcessing(true)
     try {
@@ -79,7 +92,7 @@ function App() {
     } finally {
       setIsProcessing(false)
     }
-  }
+  }, [cart, couponCode, giftCardCode, isProcessing, processingFee, subtotal, tax, total])
 
   const openView = (viewName) => {
     setActiveView(viewName)
